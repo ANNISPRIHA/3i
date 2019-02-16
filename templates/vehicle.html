@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> 3i soft tech</title>
+<link rel="stylesheet" href="../static/indexcss/home/index.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" ></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" />
+<link rel="stylesheet" href="../static/bootstrap/font-awesome.min.css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" />
+   
+      <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"rel = "stylesheet">
+      <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+     <script type='text/javascript' src='http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js'></script>
+    
+        
+</head>
+
+<body onload="resu()">
+
+<input type="hidden" value="{{carS}}" id='caro'/>
+ <section id="navbar">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<!--  <a class="navbar-brand" href="#"><img  src="../static/img/logo.png"></a>-->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+   <i class="fa fa-bars"></i>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/home/">Home </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/route/">Route History</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Log In</a>
+      </li>
+     
+    </ul>
+  </div>
+</nav>
+</section>
+<!-------------------------------------->
+<section id="banner" style="height:auto;">
+<div class="container-fluid">
+<div class="row" >
+    <div class="col-md-6">
+      <table class="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+            <tbody id="carValue">
+                
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+        <div class="col-md-12" >
+           
+             <div id="map" style="height: 310px; border: 1px solid #AAA;"></div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+            <img src="" id="pic"style="height: 280px; width:100%; border: 1px solid #AAA; margin-top:10px;"/>
+                
+            </div>
+        </div>
+    </div>
+
+</div>
+    
+</div>
+<!-- <script type='text/javascript' src='../static/jsfile/leaf-demosh.js'></script>-->
+</section>
+
+
+</body>
+</html>
+<script type="application/javascript">
+      var map = L.map( 'map', {
+    center: [20.0, 5.0],
+    minZoom: 2,
+    zoom: 2
+});
+    L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    subdomains: ['a','b','c']
+}).addTo( map );
+    
+    
+    
+
+
+var myIcon1 = L.icon({
+   iconUrl: '../static/img/g2.png',
+  iconRetinaUrl:'../static/img/g2.png',
+  iconSize: [40, 36],
+  iconAnchor: [12, 21],
+  popupAnchor: [2, -14]
+});
+
+var myIcon2 = L.icon({
+  iconUrl: '../static/img/r2.png',
+  iconRetinaUrl:'../static/img/r2.png',
+  iconSize: [40, 36],
+  iconAnchor: [12, 21],
+  popupAnchor: [2, -14]
+});    
+    
+var theMarker = {};
+    
+    
+    
+    
+    
+      
+    function resu()
+    {
+          var car= $('#caro').val();
+  function remove_rows(tablename) {
+    $(tablename).find("tr").remove();
+}
+    
+       $.ajax({
+    url: '/app/valueCar/',
+    type: 'GET',
+    dataType: 'json',
+   data:{'car':car},
+           
+
+  })
+  .done(function(data) {
+console.log(data);
+      remove_rows('#carValue');
+var no_of_train = Object.keys(data).length;
+var i=0
+
+
+var html=`<tr class="info"><td style="width:100px;">Vehicle No::</td><td class="t1" style="font-weight: bold;">` + data.number + `</td></tr><tr class="info"><td>Address</td><td class="t1">` + data.address + `</td></tr><t><td>Update At</td><td class="t1">` + data.update + `</td></tr>`;
+
+   $('#carValue').append(html);
+//-----------------------------------------map work---------------------------------------------
+           if (theMarker != undefined) {
+              map.removeLayer(theMarker);
+        };
+
+if (data.status)
+    {
+   theMarker=  L.marker([data.latitute, data.longitute ],{icon: myIcon1})
+      .bindPopup( `<span>Address <b>`+ data.address+ `</b></span><br>` )
+      .addTo( map );   
+    }
+ else
+     {
+       theMarker=   L.marker([data.latitute, data.longitute ],{icon: myIcon2})
+      .bindPopup( `<span>Address <b>`+ data.address+ `</b></span><br>` )
+      .addTo( map );   
+                   
+    }
+           
+map.setView([data.latitute,data.longitute],16); 
+           
+           
+           
+           
+           
+           
+ //--------------------------image work-----------------------          
+  
+ var item=(document).getElementById('pic');
+ var baseStr64=data.camera;  
+  item.setAttribute('src', "data:image/jpg;base64," + baseStr64);
+  baseStr64=null;
+  item=null;        
+
+  })
+  .fail(function() {
+    console.log("error");
+  })
+  .always(function() {
+    console.log("complete");
+  });
+    
+    
+    }
+    
+    
+setInterval(resu,5000);  
+    
+</script>

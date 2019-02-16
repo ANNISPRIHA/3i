@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> 3i soft tech</title>
+<link rel="stylesheet" href="../static/indexcss/home/index.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" ></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" />
+<link rel="stylesheet" href="../static/bootstrap/font-awesome.min.css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" />
+        <link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+
+      <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"rel = "stylesheet">
+      <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+     <script type='text/javascript' src='http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js'></script>
+ <script>
+        $(function() {
+            $( "#datepicker-1" ).datepicker({ dateFormat: 'yy-mm-dd' });
+         });
+    </script>       
+</head>
+
+<body >
+
+<input type="hidden" value="{{user}}" id='user'/>
+ <section id="navbar">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<!--  <a class="navbar-brand" href="#"><img  src="../static/img/logo.png"></a>-->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+   <i class="fa fa-bars"></i>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/home/">Home </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Route History</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Log In</a>
+      </li>
+     
+    </ul>
+  </div>
+</nav>
+</section>
+<!-------------------------------------->
+
+<div class="container-fluid" id="banner">
+<div class="row" style="height:60px;">
+     <div class="col-sm-3">
+        </div>
+        <div class="col-sm-6">
+      <div class="input-group">
+      <input type="text" list="browsers2" class="form-control"  id='vehicle' value="" placeholder="Vehicle-Number"/>&nbsp;
+           <datalist id="browsers2">
+                 {% for veh in cars %}
+                 <option value="{{veh}}">{{veh}}</option>
+                 {%endfor%}
+             </datalist>
+        
+          <input type = "text" class="form-control"  value=" {{date}}" id = "datepicker-1">&nbsp;&nbsp;&nbsp;&nbsp;
+          
+       <input type="button"  style="height: 35px;margin-top: 2px;width: 92px;background-color: #a517ba;font: message-box;color: white;" value="Search" id="trSearch" onclick="route()">
+
+</div>
+    </div>  
+        <div class="col-sm-3">
+        </div>
+        
+    </div>
+
+
+<div class="row"  >
+    <div class="col-md-12">
+      
+              <div id="map" style="height:78vh; border: 1px; solid #AAA;" ></div>
+             <script type='text/javascript' src='../static/jsfile/leaf-demosh.js'></script>
+
+        
+    </div>
+   
+</div>
+    </div>
+
+
+</body>
+</html>
