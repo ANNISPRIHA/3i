@@ -80,121 +80,12 @@
 </div>
     
 </div>
-<!-- <script type='text/javascript' src='../static/jsfile/leaf-demosh.js'></script>-->
+<script type='text/javascript' src='../static/daily/leaf-demosh.js'></script>
 </section>
 
 
 </body>
 </html>
-<script type="application/javascript">
-      var map = L.map( 'map', {
-    center: [20.0, 5.0],
-    minZoom: 2,
-    zoom: 2
-});
-    L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    subdomains: ['a','b','c']
-}).addTo( map );
-    
-    
-    
 
 
-var myIcon1 = L.icon({
-   iconUrl: '../static/img/g2.png',
-  iconRetinaUrl:'../static/img/g2.png',
-  iconSize: [40, 36],
-  iconAnchor: [12, 21],
-  popupAnchor: [2, -14]
-});
-
-var myIcon2 = L.icon({
-  iconUrl: '../static/img/r2.png',
-  iconRetinaUrl:'../static/img/r2.png',
-  iconSize: [40, 36],
-  iconAnchor: [12, 21],
-  popupAnchor: [2, -14]
-});    
     
-var theMarker = {};
-    
-    
-    
-    
-    
-      
-    function resu()
-    {
-          var car= $('#caro').val();
-  function remove_rows(tablename) {
-    $(tablename).find("tr").remove();
-}
-    
-       $.ajax({
-    url: '/app/valueCar/',
-    type: 'GET',
-    dataType: 'json',
-   data:{'car':car},
-           
-
-  })
-  .done(function(data) {
-console.log(data);
-      remove_rows('#carValue');
-var no_of_train = Object.keys(data).length;
-var i=0
-
-
-var html=`<tr class="info"><td style="width:100px;">Vehicle No::</td><td class="t1" style="font-weight: bold;">` + data.number + `</td></tr><tr class="info"><td>Address</td><td class="t1">` + data.address + `</td></tr><t><td>Update At</td><td class="t1">` + data.update + `</td></tr>`;
-
-   $('#carValue').append(html);
-//-----------------------------------------map work---------------------------------------------
-           if (theMarker != undefined) {
-              map.removeLayer(theMarker);
-        };
-
-if (data.status)
-    {
-   theMarker=  L.marker([data.latitute, data.longitute ],{icon: myIcon1})
-      .bindPopup( `<span>Address <b>`+ data.address+ `</b></span><br>` )
-      .addTo( map );   
-    }
- else
-     {
-       theMarker=   L.marker([data.latitute, data.longitute ],{icon: myIcon2})
-      .bindPopup( `<span>Address <b>`+ data.address+ `</b></span><br>` )
-      .addTo( map );   
-                   
-    }
-           
-map.setView([data.latitute,data.longitute],16); 
-           
-           
-           
-           
-           
-           
- //--------------------------image work-----------------------          
-  
- var item=(document).getElementById('pic');
- var baseStr64=data.camera;  
-  item.setAttribute('src', "data:image/jpg;base64," + baseStr64);
-  baseStr64=null;
-  item=null;        
-
-  })
-  .fail(function() {
-    console.log("error");
-  })
-  .always(function() {
-    console.log("complete");
-  });
-    
-    
-    }
-    
-    
-setInterval(resu,5000);  
-    
-</script>

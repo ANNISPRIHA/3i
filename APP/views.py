@@ -254,6 +254,64 @@ def data_pah(request):
 
 
 
+@csrf_exempt
+def daily_pah(request):
+        response_data = {}
+
+        path = {}
+        data = {}
+        index = 0
+        prelan = 0.0
+        prelong = 0.0
+        prevdate = datetime.now()
+        locat = Location.objects.filter(vehicle_number=request.GET['vehicle'],time_recorded__startswith=datetime.now().date())
+
+        for location in locat:
+              if (location.latitude!=null and location.longitude!=null and location.latitude!=0 and location.longitude!=0):
+                    if prelan == 0.0 and prelong == 0.0:
+                        data = {
+                            "vehicle_number": request.GET['vehicle'],
+                            "latitude": location.latitude,
+                            "longitude": location.longitude,
+                            "place": location.place_name,
+                            "time_recorded": location.time_recorded.strftime("%d-%m-%Y-%H-%M-%S"),
+                        }
+                        prelan = location.latitude
+                        prelong = location.longitude
+                        prevdate = location.time_recorded
+
+                    else:
+                        previous_location = [prelan, prelong]
+                        vehicle_location = [location.latitude, location.longitude]
+                        c = geodesic(previous_location, vehicle_location)
+
+                        interval = (location.time_recorded - prevdate).seconds / 3600
+                        if interval == 0:
+                            continue
+                        speed = c.km / interval
+                        if speed < 80:
+                            data = {
+                                "vehicle_number": request.GET['vehicle'],
+                                "latitude": location.latitude,
+                                "longitude": location.longitude,
+
+                                "place": location.place_name,
+                                "time_recorded": location.time_recorded.strftime("%d-%m-%Y-%H-%M-%S"),
+                            }
+
+                            prelan = location.latitude
+                            prelong = location.longitude
+                            prevdate = location.time_recorded
+                        else:
+
+                            continue
+
+                    path[index] = data
+                    index += 1
+        response_data[0] = path
+
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+
 
 
 
