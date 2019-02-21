@@ -63,7 +63,7 @@ console.log(length);
 if(length>0)
 {
 var mid=parseInt((length-1)/2)
-map.setView([data[0][Object.keys(data[0]).length-1].latitude, data[0][Object.keys(data[0]).length-1].longitude], 10);
+map.setView([data[0][Object.keys(data[0]).length-1].latitude, data[0][Object.keys(data[0]).length-1].longitude], 9);
 
 
 

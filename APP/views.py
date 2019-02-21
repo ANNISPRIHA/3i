@@ -151,10 +151,10 @@ def vehicleValue(request):
     vehicle=Vehicle.objects.filter(owner=user).order_by('location').reverse()
     for car in vehicle:
 
-        try:
-             ark = (car.location.place_name).split(",")
+
+
              value[index]={'number':car.vehicle_number,
-                           'address':ark[0]+" "+ark[1]+""+ark[2]+" <br>"+ark[3],
+                           'address':car.location.place_name,
                            'update':car.location.time_recorded.strftime("%H:%M:%S %d/%m/%Y"),
                            'status':car.running_status,
 
@@ -162,8 +162,7 @@ def vehicleValue(request):
 
              }
              index+=1
-        except:
-            pass
+
 
     return HttpResponse(json.dumps(value), content_type="application/json")
 
@@ -199,7 +198,7 @@ def data_pah(request):
         prelan = 0.0
         prelong = 0.0
         prevdate = datetime.now()
-        locat = Location.objects.filter(vehicle_number=request.GET['vehicle'],time_recorded__startswith=parser.parse(request.GET['choice']).date())
+        locat = Location.objects.filter(vehicle_number=request.GET['vehicle'],time_recorded__startswith=parser.parse(request.GET['choice']).date()).order_by('time_recorded')
 
         for location in locat:
               if (location.latitude!=null and location.longitude!=null and location.latitude!=0 and location.longitude!=0):
@@ -264,7 +263,7 @@ def daily_pah(request):
         prelan = 0.0
         prelong = 0.0
         prevdate = datetime.now()
-        locat = Location.objects.filter(vehicle_number=request.GET['vehicle'],time_recorded__startswith=datetime.now().date())
+        locat = Location.objects.filter(vehicle_number=request.GET['vehicle'],time_recorded__startswith=datetime.now().date()).order_by('time_recorded')
 
         for location in locat:
               if (location.latitude!=null and location.longitude!=null and location.latitude!=0 and location.longitude!=0):
