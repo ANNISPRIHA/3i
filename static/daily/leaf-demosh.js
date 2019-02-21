@@ -99,7 +99,7 @@ L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 
 
-
+ var theMarker = {};
 function route() {
 //var vehicle=$('#vehicle_s').val()+$('#vehicle_number').val();
 
@@ -140,6 +140,22 @@ var myIconRed = L.icon({
 
 
 console.log(data);
+      
+    for(i in map._layers) {
+        if(map._layers[i]._path != undefined) {
+            try {
+                map.removeLayer(map._layers[i]);
+            }
+            catch(e) {
+                console.log("problem with " + e + map._layers[i]);
+            }
+        }
+    }
+     if (theMarker != undefined) {
+              map.removeLayer(theMarker);
+        };
+
+
 for(var j=0;j<no_of_vehicle;j++)
 {
 var length=Object.keys(data[j]).length;
@@ -147,7 +163,7 @@ console.log(length);
 if(length>0)
 {
 var mid=parseInt((length-1)/2)
-map.setView([data[0][Object.keys(data[0]).length-1].latitude, data[0][Object.keys(data[0]).length-1].longitude], 10);
+map.setView([data[0][Object.keys(data[0]).length-1].latitude, data[0][Object.keys(data[0]).length-1].longitude], 18);
 
 
 
@@ -207,7 +223,7 @@ L.marker( [data[j][0].latitude, data[j][0].longitude], {icon: myIconRed} )
           <span>Updated At: <b>`+ data[j][length-1].time_recorded + `</b></span><br>
         </div>`
 
-L.marker( [data[j][length-1].latitude, data[j][length-1].longitude], {icon: myIcon1} )
+theMarker=L.marker( [data[j][length-1].latitude, data[j][length-1].longitude], {icon: myIcon1} )
       .bindPopup( htmle )
       .addTo( map );
 
