@@ -252,4 +252,3 @@ theMarker=L.marker( [data[j][length-1].latitude, data[j][length-1].longitude], {
 
 
   
- 

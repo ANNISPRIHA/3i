@@ -81,11 +81,11 @@ AUTH_USER_MODEL='user.AdminUser'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'KIEZEN_SOFTECH_testdb',
+        'NAME': 'db3i',
 
-        'USER': 'KIEZE_root',
-        'PASSWORD': 'mydb@12345#',
-        'HOST': '103.95.13.126',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
 
     }
